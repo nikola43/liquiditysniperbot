@@ -18,7 +18,7 @@ import (
 	"github.com/joho/godotenv"
 	pancakeFactory "github.com/nikola43/liquiditysniperbot/contracts/IPancakeFactory"
 	pancakePair "github.com/nikola43/liquiditysniperbot/contracts/IPancakePair"
-	"github.com/nikola43/liquiditysniperbot/web3golanghelper/web3helper"
+	"github.com/nikola43/web3golanghelper/web3helper"
 )
 
 type Reserve struct {
@@ -55,7 +55,7 @@ func main() {
 				if err != nil {
 					fmt.Println(err)
 				}
-				web3GolangHelper.Buy(ROUTER_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount)
+				web3GolangHelper.Buy(ROUTER_ADDRESS, WETH_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount)
 				os.Exit(0)
 			}
 		}

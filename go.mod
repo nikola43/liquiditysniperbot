@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/ethereum/go-ethereum v1.10.26
-	github.com/nikola43/web3golanghelper v0.0.0-20221008144303-4af1a2c4b4f8
+	github.com/nikola43/web3golanghelper v0.0.0-20230108163011-1077d4a22ec8
 )
 
 require (
