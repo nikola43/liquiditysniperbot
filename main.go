@@ -13,6 +13,7 @@ import (
 	"time"
 
 	"github.com/ethereum/go-ethereum/crypto"
+	"github.com/fatih/color"
 
 	"github.com/ethereum/go-ethereum/common"
 	"github.com/joho/godotenv"
@@ -28,6 +29,11 @@ type Reserve struct {
 }
 
 func main() {
+
+	//yellow := color.New(color.FgYellow).SprintFunc()
+	// red := color.New(color.FgRed).SprintFunc()
+	// green := color.New(color.FgGreen).SprintFunc()
+	// cyan := color.New(color.FgCyan).SprintFunc()
 
 	// read .env variables
 	RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS := readEnvVariables()
@@ -55,13 +61,16 @@ func main() {
 				if err != nil {
 					fmt.Println(err)
 				}
-				web3GolangHelper.Buy(ROUTER_ADDRESS, WETH_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount)
+				web3GolangHelper.BuyV3(ROUTER_ADDRESS, WETH_ADDRESS, PK, fromAddress, TOKEN_ADDRESS, buyAmount)
+				fmt.Println("Press enter to exit")
+				fmt.Scanln()
 				os.Exit(0)
 			}
 		}
 		// sleep 1 second
 		time.Sleep(1 * time.Millisecond)
 	}
+
 }
 
 func OpenBrowser(url string) {
@@ -90,6 +99,10 @@ func readEnvVariables() (string, string, string, string, string, string, string,
 		log.Fatal("Error loading .env file")
 	}
 
+	red := color.New(color.FgRed).SprintFunc()
+	cyan := color.New(color.FgCyan).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+
 	RPC_URL := os.Getenv("RPC_URL")
 	WS_URL := os.Getenv("WS_URL")
 	WETH_ADDRESS := os.Getenv("WETH_ADDRESS")
@@ -98,6 +111,48 @@ func readEnvVariables() (string, string, string, string, string, string, string,
 	PK := os.Getenv("PK")
 	BUY_AMOUNT := os.Getenv("BUY_AMOUNT")
 	ROUTER_ADDRESS := os.Getenv("ROUTER_ADDRESS")
+
+	if RPC_URL == "" {
+		fmt.Printf("%s\n", red("Error: RPC_URL is not set in .env"))
+		os.Exit(1)
+	}
+	if WS_URL == "" {
+		fmt.Printf("%s\n", red("Error: WS_URL is not set in .env"))
+		os.Exit(1)
+	}
+	if WETH_ADDRESS == "" {
+		fmt.Printf("%s\n", red("Error: WETH_ADDRESS is not set in .env"))
+		os.Exit(1)
+	}
+	if FACTORY_ADDRESS == "" {
+		fmt.Printf("%s\n", red("Error: FACTORY_ADDRESS is not set in .env"))
+		os.Exit(1)
+	}
+	if TOKEN_ADDRESS == "" {
+		fmt.Printf("%s\n", red("Error: TOKEN_ADDRESS is not set in .env"))
+		os.Exit(1)
+	}
+	if PK == "" {
+		fmt.Printf("%s\n", red("Error: PK is not set in .env"))
+		os.Exit(1)
+	}
+	if BUY_AMOUNT == "" {
+		fmt.Printf("%s\n", red("Error: BUY_AMOUNT is not set in .env"))
+		os.Exit(1)
+	}
+	if ROUTER_ADDRESS == "" {
+		fmt.Printf("%s\n", red("Error: ROUTER_ADDRESS is not set in .env"))
+		os.Exit(1)
+	}
+
+	fmt.Printf("%s\n\n", cyan("CONFIG"))
+	fmt.Printf("%s: %s\n", cyan("RPC_URL"), yellow(RPC_URL))
+	fmt.Printf("%s: %s\n", cyan("WS_URL"), yellow(WS_URL))
+	fmt.Printf("%s: %s\n", cyan("WETH_ADDRESS"), yellow(WETH_ADDRESS))
+	fmt.Printf("%s: %s\n", cyan("FACTORY_ADDRESS"), yellow(FACTORY_ADDRESS))
+	fmt.Printf("%s: %s\n", cyan("TOKEN_ADDRESS"), yellow(TOKEN_ADDRESS))
+	fmt.Printf("%s: %s\n", cyan("BUY_AMOUNT"), yellow(BUY_AMOUNT))
+	fmt.Printf("%s: %s\n", cyan("ROUTER_ADDRESS"), yellow(ROUTER_ADDRESS))
 
 	return RPC_URL, WS_URL, WETH_ADDRESS, FACTORY_ADDRESS, TOKEN_ADDRESS, PK, BUY_AMOUNT, ROUTER_ADDRESS
 }
